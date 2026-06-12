@@ -1,91 +1,52 @@
 # Security Policy
 
-## Supported versions
+## Versioni supportate
 
-Security fixes are applied to the current minor release on `main`. Older
-minors are not maintained.
+Le fix di sicurezza sono applicate all'ultima release su `main`.
 
-| Version | Status      |
-| ------- | ----------- |
-| 4.4.x   | Supported   |
-| < 4.4   | Unsupported |
+| Versione | Stato |
+|---|---|
+| 1.0.x | Supportata |
 
-## Reporting a vulnerability
+## Segnalare una vulnerabilità
 
-Please do **not** open a public GitHub issue for a suspected vulnerability.
+Non aprire una issue pubblica su GitHub per una vulnerabilità sospetta.
 
-Use one of:
+Usa:
+1. **GitHub Security Advisories** — [form di segnalazione privata](https://github.com/sententiaki/Sententia-plugin/security/advisories/new).
+2. **Issues GitHub** con label `security` per problemi a bassa criticità.
 
-1. GitHub Security Advisories — [private report form](https://github.com/fedec65/bettercallclaude/security/advisories/new).
-2. Email the maintainer: `federico.cesconi@sandsiv.com`, subject prefixed
-   `[bettercallclaude security]`.
+Includi nella segnalazione:
+- Il componente coinvolto (plugin manifest, privacy hook, un server MCP).
+- La versione testata.
+- Steps di riproduzione: prompt, tool call, input, transcript di rete.
+- Impatto osservato: dati usciti dalla macchina, bypass di conferma, agente forzato a un tool non dichiarato.
+- La tua valutazione di severità.
 
-Please include, as available:
+## SLA (best effort)
 
-- Which component (plugin manifest, privacy hook, an MCP server — which one,
-  HTTP vs STDIO). Note that MCP server source lives in the separate
-  [`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP)
-  repo since v4.4.0; only the local `ollama` STDIO server is bundled here.
-- The commit or release version you tested against.
-- Reproduction steps: prompt, tool call, inputs, network transcript.
-- Observed impact: data that left the machine, confirmation bypassed, agent
-  coerced into a tool it does not list, etc.
-- Your assessment of severity and blast radius.
+| Severità | Prima risposta | Target fix |
+|---|---|---|
+| Critica | 48h | 7 giorni |
+| Alta | 5 giorni | 30 giorni |
+| Media | 10 giorni | Prossima minor |
+| Bassa | 15 giorni | In batch |
 
-## Triage SLA (best effort)
-
-| Severity | First response | Fix target                |
-| -------- | -------------- | ------------------------- |
-| Critical | 48 h           | 7 days (patch release)    |
-| High     | 5 days         | 30 days                   |
-| Medium   | 10 days        | Next minor                |
-| Low      | 15 days        | Batched                   |
-
-"Critical" here means privileged content exfiltration (the whole
-`Anwaltsgeheimnis` protection promise), remote code execution in any MCP
-server, or authentication bypass on the hosted gateway.
+"Critica" significa: esfiltrazione di contenuto privilegiato (violazione dell'Anwaltsgeheimnis), remote code execution in un server MCP, o bypass di autenticazione.
 
 ## Scope
 
 In scope:
-
-- The plugin manifest, hooks, agents, commands, skills in
-  [`bettercallclaude/`](./bettercallclaude/).
-- The local `ollama` STDIO server bundled at
-  `bettercallclaude/mcp-servers/ollama/`.
-- The seven remote HTTP MCP servers and the HTTP ingress gateway that serves
-  `mcp.bettercallclaude.ch` — source in
-  [`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP).
+- Plugin manifest, hook, agenti, comandi, skill in `sententia/`.
+- Il server MCP locale Ollama bundled in `sententia/mcp-servers/ollama/`.
 
 Out of scope:
+- Claude Desktop — segnala ad [Anthropic](https://www.anthropic.com/security).
+- Le Anthropic API — segnala ad [Anthropic](https://www.anthropic.com/security).
+- I server MCP pubblici (`mcp.opencaselaw.ch`, `mcp.bettercallclaude.ch`): segnala ai rispettivi progetti upstream.
+- Le fonti giuridiche pubbliche interrogate dal plugin (`entscheidsuche.ch`, `fedlex.admin.ch`, ecc.).
 
-- Cowork Desktop itself — report to [Anthropic](https://www.anthropic.com/security).
-- The Anthropic API — report to [Anthropic](https://www.anthropic.com/security).
-- Public Swiss legal sources the plugin queries (`entscheidsuche.ch`,
-  `fedlex.admin.ch`, etc.).
-- Anything hosted on the swiss-caselaw SSE endpoint (see that project's
-  security policy).
+## Non-problemi noti
 
-## Coordinated disclosure
-
-We prefer coordinated disclosure. By default, the maintainer will keep a
-report private until a fix is released, then publish a GitHub Security
-Advisory and credit the reporter (unless anonymity is requested).
-
-## Hall of fame
-
-When the project accumulates meaningful reports, reporters who want public
-credit will be listed here.
-
-## Known non-issues
-
-These items look like bugs but are intentional:
-
-- **Lint warnings in the MCP servers.** `@typescript-eslint/no-explicit-any`
-  and unused-var warnings are tracked separately and do not fail CI. They
-  are not security issues.
-- **The `pre-tool-use` hook uses regex, not ML.** This is a design choice
-  explained in [`docs/PRIVACY.md`](./docs/PRIVACY.md) §2. The hook reduces
-  accidental leakage; it is not a guarantee.
-- **Seed data at `data/bettercallclaude.db`.** Public legal references, no
-  PII. See [`docs/PRIVACY.md`](./docs/PRIVACY.md) §3.
+- **Il hook `pre-tool-use` usa regex, non ML.** È una scelta progettuale documentata. Il hook riduce la fuoriuscita accidentale; non è una garanzia assoluta.
+- **Il seed data `data/bettercallclaude.db`** contiene riferimenti giuridici pubblici, nessun PII.

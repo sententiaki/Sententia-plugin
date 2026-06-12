@@ -1,149 +1,78 @@
-# Contributing to BetterCallClaude
+# Contribuire a Sententia
 
-Thanks for taking the time. This is a small, opinionated project; please read
-this document once before opening a non-trivial PR.
+Grazie per l'interesse. Leggi questo documento prima di aprire una PR significativa.
 
-## Where the code lives
-
-As of v4.4.0 the Swiss-legal MCP server source code and HTTP aggregator have
-been split out into a separate repo:
-
-- **This repo (`fedec65/bettercallclaude`)** — the Cowork Desktop / Claude
-  Code plugin: agents, commands, skills, hooks, and `.mcp.json`. Pointers
-  only — the remote MCPs it talks to are HTTPS URLs on
-  `mcp.bettercallclaude.ch`. One server (`ollama`) is bundled locally as a
-  STDIO subprocess because it talks to the user's own Ollama daemon.
-- **[`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP)** —
-  source code for every MCP server (bge-search, entscheidsuche, fedlex-sparql,
-  legal-citations, onlinekommentar, legal-persona, tas-jurisprudence, shared
-  lib, integration tests) and the Express aggregator at `mcp-servers-http/`
-  that Railway deploys to `mcp.bettercallclaude.ch`. To change what an MCP
-  **does**, open a PR there.
-
-## What lives where (this repo)
+## Struttura del repository
 
 ```
-bettercallclaude/           The Cowork Desktop / Claude Code plugin itself.
-├── .claude-plugin/         plugin.json + marketplace.json. Schema-validated in CI.
-├── .mcp.json               MCP server declarations. Remote URLs + ollama stdio.
-├── agents/                 20 subagent prompts. YAML frontmatter: name, description, model, tools.
-├── commands/               24 slash commands.
-├── skills/                 12 skills (SKILL.md per directory).
-├── hooks/                  Cowork Desktop hooks. Entrypoint for privacy protection.
-├── scripts/                privacy-check.js and its test file.
-└── mcp-servers/ollama/     Bundled local STDIO MCP server (dist/ committed).
+sententia/           Il plugin Claude Desktop: agenti, comandi, skill, hook, .mcp.json
+├── agents/          16 agenti (YAML frontmatter: name, description, model, tools)
+├── commands/        15 comandi slash
+├── skills/          12 skill (SKILL.md per directory)
+├── hooks/           Hook Cowork Desktop (privacy)
+├── scripts/         privacy-check.js e il suo file di test
+└── mcp-servers/     Server MCP locale (ollama STDIO)
 
-packages/                   Supplementary agents shared across the plugin.
-scripts/                    Repo-level scripts: fetch-onlinekommentar-data.js,
-                            package-plugin.sh.
-docs/                       Design docs, reviews, specs.
-.github/workflows/          CI (validate-plugin) and Release (tag → zip → GH release).
+docs/                Documentazione tecnica e design
+templates/           Template Word compatibili
 ```
 
-## Prerequisites
+I server MCP remoti (dati giuridici) sono ospitati da terze parti pubbliche:
+- `mcp.opencaselaw.ch` — [OpenCaseLaw](https://opencaselaw.ch)
+- `mcp.bettercallclaude.ch` — [BetterCallClaude](https://github.com/fedec65/BetterCallClaudeMCP)
 
-- Node.js 20 or 22.
-- For privacy-hook work: nothing extra — `privacy-check.js` uses only the
-  Node standard library.
-- For Ollama server work: a local Ollama daemon if you want to run the STDIO
-  server end-to-end.
-- For MCP **behaviour** changes: clone
-  [`fedec65/BetterCallClaudeMCP`](https://github.com/fedec65/BetterCallClaudeMCP)
-  and work there instead of this repo.
+Per modificare il comportamento dei server MCP, apri una PR nei rispettivi repository upstream.
 
-## Setup
+## Prerequisiti
 
-```bash
-git clone https://github.com/fedec65/bettercallclaude.git
-cd bettercallclaude
-
-# Package the plugin into a distributable zip (exercises the same path CI
-# and Release take).
-npm run package
-```
-
-There is no TypeScript to compile in this repo anymore — the only runtime
-code is `scripts/privacy-check.js` (vanilla Node) and the pre-built
-`bettercallclaude/mcp-servers/ollama/dist/`.
+- Node.js 20 o 22.
+- Per lavoro sul privacy hook: niente di extra — `privacy-check.js` usa solo la libreria standard Node.
+- Per il server Ollama: un daemon Ollama locale.
 
 ## Branching
 
-All changes go to branches off `main`. Name convention:
+Tutti i cambiamenti vanno in branch off `main`:
 
-- `fix/<short-name>` — bug fix
-- `feat/<short-name>` — new capability
-- `docs/<short-name>` — documentation only
-- `chore/<short-name>` — dependency bumps, tooling, scaffolding
-- `quality/<short-name>` — reviews and audit documents (no code changes)
+- `fix/<nome>` — bug fix
+- `feat/<nome>` — nuova funzionalità
+- `docs/<nome>` — solo documentazione
+- `chore/<nome>` — dipendenze, tooling
 
-Do not open PRs against `quality/*` branches; those are review sinks.
-
-## Commit message style
-
-Conventional-ish, but oriented at explaining *why* in the body:
+## Stile dei commit
 
 ```
-fix(privacy-hook): cover MultiEdit tool and gate weak markers
+feat(draft): add document generation agent with footnote citations
 
-The hook's matcher was "Write|Edit|Bash" so MultiEdit slipped through, and
-its pattern list fired on the bare word "vertraulich" (matches every
-German-language document footer). This adds ...
+Implements the core /sententia:draft pipeline: research → write → footnotes.
+Citations follow BGE/DTF format with Erwägung number and page (BCC standard).
 ```
 
-- First line ≤ 72 chars, `<type>(<scope>): imperative verb`.
-- Body explains the motivation, not just the diff. Assume the reader is a
-  future contributor with the review context only in their browser history.
-- Always link back to `docs/reviews/` or an issue number when applicable.
+- Prima riga ≤ 72 caratteri, `<tipo>(<scope>): verbo imperativo`.
+- Il corpo spiega il perché, non solo il diff.
 
-## Pull request checklist
+## Checklist PR
 
-Before marking a PR ready for review:
+Prima di aprire una PR:
 
-- [ ] `npm run package` succeeds locally (builds the distributable zip).
-- [ ] `node bettercallclaude/scripts/privacy-check.test.js` is green if you
-      touched the privacy hook.
-- [ ] CI is green on GitHub.
-- [ ] PR description uses the template in `.github/` if present, and has a
-      concrete testing section.
-- [ ] No secrets, `.env`, or `settings.json` committed.
+- [ ] `npm run package` funziona localmente.
+- [ ] `node sententia/scripts/privacy-check.test.js` è verde se hai toccato il privacy hook.
+- [ ] CI verde su GitHub.
+- [ ] Nessun segreto, `.env`, o `settings.json` committato.
 
-## Style notes specific to this repo
+## Regole tecniche importanti
 
-- **Agents must declare `model:`.** Inheriting the caller's model gives
-  non-deterministic cost and latency. Use `opus` for coordination,
-  `haiku` for mechanical formatting, `sonnet` for everything else.
-- **Agents that spawn subagents must list `Task` as a tool.** The prompt
-  alone is not enough; the subagent-runtime checks the tool list.
-- **Do not use `${user_config.*}` inside `url:` fields in `.mcp.json`.**
-  Cowork's server-side plugin validator rejects URL templating before the
-  user is prompted for `userConfig` values (see anthropic/claude-code#39455).
-  Hardcode the gateway URLs (`https://mcp.bettercallclaude.ch/...`,
-  `https://mcp.opencaselaw.ch`) and keep `${user_config.*}` substitution for
-  `env:`, `args:`, and `headers:` only. Self-hosters fork and edit
-  `.mcp.json` directly.
-- **Do not hardcode privacy patterns in the hook's strong list without
-  word boundaries.** Weak markers (bare `confidential`, `vertraulich`,
-  etc.) must be gated on a discriminator — see
-  `bettercallclaude/scripts/privacy-check.js` and its test file.
+- **Gli agenti devono dichiarare `model:`** — usa `opus` per coordinamento, `haiku` per formattazione meccanica, `sonnet` per tutto il resto.
+- **Gli agenti che lanciano sub-agenti devono listare `Task` come tool.**
+- **Non usare `${user_config.*}` dentro i campi `url:` di `.mcp.json`** — Cowork Desktop rifiuta il templating URL durante la validazione upload. Usa `${user_config.*}` solo in `env:`, `args:`, e `headers:`.
 
-## Testing changes to the privacy hook
+## Test del privacy hook
 
 ```bash
-cd bettercallclaude
-node scripts/privacy-check.test.js    # 26 cases
-echo '{"tool_name":"Write","tool_input":{"file_path":"/tmp/x","content":"Anwaltsgeheimnis"}}' \
-  | node scripts/privacy-check.js
-# → emits hookSpecificOutput JSON with permissionDecision: "ask"
+cd sententia
+node scripts/privacy-check.test.js
 ```
 
-## Code review expectations
+## Domande
 
-- Behaviour-neutral refactors (renames, reshuffles) are welcome but must be
-  isolated from behaviour changes; do not mix.
-- Any change to `plugin.json` or `.mcp.json` requires a corresponding note
-  in the PR body about user-visible impact (re-prompt on next enable, etc.).
-
-## Questions
-
-Open a discussion on GitHub or email the maintainer. For security issues
-specifically see [`SECURITY.md`](./SECURITY.md).
+Apri una discussione su GitHub o contatta il maintainer via Issues.
+Per problemi di sicurezza vedi [`SECURITY.md`](./SECURITY.md).
