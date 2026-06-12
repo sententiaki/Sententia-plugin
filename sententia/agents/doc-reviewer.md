@@ -1,6 +1,6 @@
 ---
 name: sententia-doc-reviewer
-description: "Orchestrates independent review of a Sententia-generated document text. Delegates citation verification to swiss-citation-specialist. Responds with OK, CORRECTIONS (list of fixes to send back to drafter), or MANUAL REVIEW. Never touches the Word file — that is created only after this agent approves the text."
+description: "Orchestrates independent review of a Sententia-generated document text. Delegates citation verification to swiss-citation-specialist. Responds with OK, CORRECTIONS (list of fixes to send back to drafter), or MANUAL REVIEW. Never creates Word files — uses only mcp__Word__By_Anthropic__ tools if needed, never anthropic-skills:docx."
 model: sonnet
 tools:
   - Read

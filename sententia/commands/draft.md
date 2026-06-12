@@ -64,15 +64,14 @@ Massimo 3 iterazioni. Se dopo 3 cicli ci sono ancora problemi, procedi comunque 
 Solo quando il reviewer ha approvato il testo, crea il file Word **senza fare domande**:
 
 1. Leggi `template_path` dalle impostazioni del plugin.
-   - Se impostato: usa quel file come base per il documento.
-   - Se non impostato o non trovato: crea un file Word nuovo senza template — **non chiedere nulla, procedi direttamente**.
-2. Usa lo skill `anthropic-skills:docx` per inserire nel documento:
+   - Se impostato: apri il template con `mcp__Word__By_Anthropic___open_document`.
+   - Se non impostato: crea un documento nuovo con `mcp__Word__By_Anthropic___create_document`. **Non chiedere nulla, procedi direttamente.**
+2. Inserisci il testo nel documento usando `mcp__Word__By_Anthropic___insert_text` o `mcp__Word__By_Anthropic___replace_text`:
    - Data
    - Titolo/Oggetto
-   - Corpo del documento
-   - Note a piè di pagina come vere note Word
-3. Leggi `output_folder` dalle impostazioni. Se non impostato, salva sul Desktop dell'utente.
-4. Salva con nome: `[TipoDocumento]-[NomeDestinatario]-[YYYY-MM-DD].docx`
+   - Corpo del documento con note a piè di pagina
+3. Leggi `output_folder` dalle impostazioni. Se non impostato, salva sul Desktop: `~/Desktop/`.
+4. Salva con `mcp__Word__By_Anthropic___save_document` con nome: `[TipoDocumento]-[NomeDestinatario]-[YYYY-MM-DD].docx`
 
 ---
 
