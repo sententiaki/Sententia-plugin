@@ -1,217 +1,189 @@
 ---
-description: "Show complete BetterCallClaude command reference, available agents, skills, and usage examples"
+description: "Mostra la guida completa ai comandi Sententia, gli agenti disponibili, le skill e esempi di utilizzo"
 ---
 
-# BetterCallClaude Command Reference
+# Guida Sententia
 
-Display the complete reference for the BetterCallClaude plugin. Output the following formatted guide exactly as shown.
-
----
-
-## Quick Start
-
-BetterCallClaude provides Swiss legal intelligence through three interfaces:
-
-1. **Commands** -- Explicit slash commands for specific tasks
-2. **Agents** -- Specialist subagents for domain-specific work
-3. **Skills** -- Auto-activated knowledge that enriches all responses
+Visualizza la guida completa al plugin Sententia. Mostra il seguente contenuto formattato esattamente come indicato.
 
 ---
 
-## Commands (24)
+## Come funziona
 
-### Core Commands
+Sententia fornisce due capacità principali:
 
-| Command | Description |
+1. **Generazione documenti** — scrivi il documento che ti serve, Sententia lo redige sul tuo template con fonti citate in nota, un secondo agente controlla le fonti, il file Word viene aperto automaticamente.
+2. **Ricerca e analisi legale** — tutti gli strumenti di BetterCallClaude per la ricerca giuridica svizzera (precedenti BGE/DTF, Fedlex, commentari, strategia, analisi avversariale).
+
+---
+
+## Comandi ($TOTAL)
+
+### Generazione documenti (Sententia)
+
+| Comando | Descrizione |
 |---------|-------------|
-| `/bettercallclaude:legal` | Intelligent gateway -- analyzes intent, routes to agents, manages workflows |
-| `/bettercallclaude:legal --refine` | Prompt refinement mode -- reformulates vague queries into precise legal prompts |
-| `/bettercallclaude:research` | Search BGE/ATF/DTF precedents, analyze statutes, verify citations |
-| `/bettercallclaude:strategy` | Litigation strategy, risk assessment, settlement evaluation |
-| `/bettercallclaude:draft` | Draft contracts, court submissions, legal opinions |
+| `/sententia:draft` | **Genera qualsiasi documento legale sul template dello studio** — lettera, diffida, parere, ricorso, contratto, atto. Ricerca le fonti, inserisce note a piè di pagina, review indipendente, Word aperto. |
 
-### Jurisdiction Commands
+### Ricerca e analisi legale
 
-| Command | Description |
+| Comando | Descrizione |
 |---------|-------------|
-| `/bettercallclaude:federal` | Force federal law mode (ZGB, OR, StGB, BV analysis) |
-| `/bettercallclaude:cantonal` | Force cantonal law mode for a specific canton |
+| `/sententia:legal` | Gateway intelligente — analizza la richiesta e coordina agenti e workflow |
+| `/sententia:research` | Ricerca precedenti BGE/ATF/DTF, analisi statuti, verifica citazioni |
+| `/sententia:strategy` | Strategia processuale, valutazione rischi, analisi transattiva |
+| `/sententia:adversarial` | Analisi avversariale a tre agenti: avvocato, controparte, giudice |
+| `/sententia:precedent` | Ricerca e analisi catene di precedenti BGE |
+| `/sententia:legal-5step` | Pipeline completa in 5 fasi: intake → ricerca → strategia → avversariale → redazione |
+| `/sententia:briefing` | Briefing strutturato con panel di specialisti |
 
-### Analysis Commands
+### Analisi documenti
 
-| Command | Description |
+| Comando | Descrizione |
 |---------|-------------|
-| `/bettercallclaude:doc-analyze` | Analyze legal documents: issues, clauses, citations, compliance (playbook-aware) |
-| `/bettercallclaude:nda-triage` | Triage NDAs: GREEN/YELLOW/RED against Swiss law and playbook thresholds (single or batch) |
-| `/bettercallclaude:precedent` | Search and analyze BGE precedent chains and evolution |
-| `/bettercallclaude:validate` | Batch validate Swiss legal citations for format and existence |
-| `/bettercallclaude:adversarial` | Three-agent adversarial analysis: advocate, adversary, judge |
+| `/sententia:doc-analyze` | Analizza documenti legali: clausole, citazioni, conformità |
+| `/sententia:validate` | Valida citazioni legali svizzere in batch |
+| `/sententia:cite` | Formatta e verifica singole citazioni svizzere |
 
-### Workflow Commands
+### Strumenti
 
-| Command | Description |
+| Comando | Descrizione |
 |---------|-------------|
-| `/bettercallclaude:workflow` | Define and execute multi-agent pipelines |
-| `/bettercallclaude:briefing` | Structured pre-execution briefing with specialist panel and plan building |
-| `/bettercallclaude:translate` | Translate legal documents between DE, FR, IT, EN |
+| `/sententia:translate` | Traduce testi legali tra DE, FR, IT, EN |
+| `/sententia:summarize` | Sintetizza output di pipeline multi-agente |
+| `/sententia:refine` | Affina query vaghe in prompt legali precisi |
+| `/sententia:cantonal` | Ricerca diritto cantonale (26 cantoni) |
+| `/sententia:federal` | Modalità diritto federale |
 
-### Onboarding & Diagnostics
+### Sistema
 
-| Command | Description |
+| Comando | Descrizione |
 |---------|-------------|
-| `/bettercallclaude:start` | Welcome and onboarding — checks connectivity, guides playbook creation, shows usage examples |
-| `/bettercallclaude:doctor` | Diagnose MCP server connectivity — tests each server, reports status and impact |
-
-### Reference Commands
-
-| Command | Description |
-|---------|-------------|
-| `/bettercallclaude:cite` | Format and verify individual Swiss legal citations |
-| `/bettercallclaude:setup` | ⚠ Alias for `/start` — will be removed in v5.0 |
-| `/bettercallclaude:refine` | Refine vague legal queries into precise, effective prompts |
-| `/bettercallclaude:version` | Display plugin version, components, and system status |
-| `/bettercallclaude:summarize` | Consolidate multi-agent pipeline output with length control (--short/--medium/--long) |
-| `/bettercallclaude:legal-5step` | Execute the 5-step end-to-end Swiss legal framework: intake → research → strategy → adversarial → draft |
-| `/bettercallclaude:privacy` | View or change the privacy mode (strict/balanced/cloud) |
-| `/bettercallclaude:help` | This command reference |
+| `/sententia:privacy` | Visualizza o modifica la modalità privacy (strict/balanced/cloud) |
+| `/sententia:version` | Versione del plugin e stato server |
+| `/sententia:help` | Questa guida |
 
 ---
 
-## Agents (20)
+## Agenti (21)
 
-### Core Pipeline Agents
+### Agenti Sententia (nuovi)
 
-| Agent | Domain |
-|-------|--------|
-| researcher | Swiss legal research, BGE/ATF/DTF search, statutory analysis |
-| strategist | Litigation strategy, risk assessment, cost-benefit analysis |
-| drafter | Legal document drafting in Swiss format |
-| citation | BGE citation verification and multi-lingual formatting |
-| compliance | FINMA, AML/KYC, regulatory compliance checks |
+| Agente | Funzione |
+|--------|----------|
+| `doc-reviewer` | Review indipendente del documento generato — delega la verifica citazioni a `citation`, applica le correzioni al file Word, produce il report per l'avvocato |
 
-### Specialized Domain Agents
+### Agenti di ricerca e analisi (da BetterCallClaude)
 
-| Agent | Domain |
-|-------|--------|
-| data-protection | GDPR, nDSG/FADP privacy analysis |
-| risk | Case outcome probability, damages quantification, Monte Carlo simulation |
-| procedure | ZPO/StPO deadlines, procedural rules, forum selection |
-| translator | DE/FR/IT legal terminology and document translation |
-| fiscal | Tax law, DTAs, transfer pricing, fiscal structuring |
-| corporate | AG/GmbH governance, M&A, commercial contracts |
-| cantonal | All 26 Swiss cantonal legal systems |
-| realestate | Property law, Grundbuch, Lex Koller |
-| advocate | Builds the strongest case for a position (adversarial mode) |
-| adversary | Challenges and stress-tests the case (adversarial mode) |
-| judicial | Synthesizes advocate and adversary into balanced assessment |
-| briefing | Pre-execution intake, specialist panel consultation, execution plan building |
-| orchestrator | Multi-agent pipeline coordination and workflow management |
-| summarizer | Pipeline output consolidation, deduplication, length-calibrated summaries |
-| prompt-engineer | Prompt refinement — transforms vague queries into precise, effective legal prompts |
-
----
-
-## Skills (12)
-
-Skills activate automatically when Claude detects relevant context.
-
-| Skill | Auto-Activates When |
-|-------|---------------------|
-| swiss-legal-research | Legal research queries, BGE/ATF/DTF references, jurisdiction resolution |
-| swiss-legal-drafting | Document creation, contract drafting requests |
-| swiss-legal-strategy | Litigation planning, risk assessment questions |
-| swiss-legal-translation | Translation requests between DE/FR/IT/EN legal texts |
-| swiss-document-analysis | Legal document review, clause analysis, compliance checks |
-| swiss-citation-formats | Citation formatting, BGE/ATF/DTF references in text |
-| adversarial-analysis | Three-agent adversarial legal analysis requests |
-| legal-intake | Vague or complex queries — Socratic refinement (single-domain) or structured briefing (multi-domain) |
-| data-protection-law | DSG/FADP, GDPR adequacy, privacy compliance questions |
-| compliance-frameworks | FINMA, AML/KYC, financial regulatory compliance |
-| privacy-routing | Sensitive client data patterns detected (Anwaltsgeheimnis) |
-| legal-5step-framework | Sequential 5-step legal pipeline with quality gates and checkpoints |
+| Agente | Dominio |
+|--------|---------|
+| `researcher` | Ricerca giuridica svizzera, BGE/ATF/DTF, analisi statuti |
+| `strategist` | Strategia processuale, valutazione rischi |
+| `drafter` | Redazione documenti legali in formato svizzero |
+| `citation` | Verifica e formattazione citazioni BGE |
+| `advocate` | Costruisce la tesi più forte a favore (modalità avversariale) |
+| `adversary` | Sfida e stress-testa la tesi (modalità avversariale) |
+| `judicial` | Sintesi neutrale di avvocato e controparte |
+| `procedure` | Termini ZPO/StPO, regole procedurali, forum |
+| `fiscal` | Diritto fiscale, CDI, transfer pricing |
+| `corporate` | Governance AG/GmbH, M&A, contratti commerciali |
+| `realestate` | Diritto immobiliare, Grundbuch, Lex Koller |
+| `compliance` | FINMA, GwG/LBA, conformità normativa |
+| `data-protection` | nDSG/FADP, GDPR, privacy |
+| `cantonal` | Tutti i 26 sistemi giuridici cantonali |
+| `translator` | Traduzione terminologia legale DE/FR/IT/EN |
+| `risk` | Probabilità esito, quantificazione danni |
+| `summarizer` | Consolidamento output pipeline |
+| `briefing` | Intake strutturato, panel specialisti |
+| `orchestrator` | Coordinamento pipeline multi-agente |
+| `prompt-engineer` | Affinamento query legali |
 
 ---
 
-## MCP Servers (9)
+## Skill (12)
 
-| Server | Purpose | Transport |
-|--------|---------|-----------|
-| entscheidsuche | Swiss court decision search (Bundesgericht + cantonal courts) | HTTP |
-| bge-search | Federal Supreme Court decision search and validation | HTTP |
-| legal-citations | Citation verification and multi-lingual formatting | HTTP |
-| fedlex-sparql | Swiss federal legislation database queries | HTTP |
-| onlinekommentar | Swiss legal commentary access | HTTP |
-| legal-persona | Swiss-law document intelligence (strategy, drafting, analysis) | HTTP |
-| tas-jurisprudence | CAS/TAS sports arbitration awards and jurisprudence | HTTP |
-| swiss-caselaw | Case law search, citation graphs, appeal chains, doctrine (opencaselaw.ch) | SSE |
-| ollama | Local privacy classification for privileged content | Local |
+Le skill si attivano automaticamente quando il contesto è rilevante.
+
+| Skill | Si attiva quando |
+|-------|-----------------|
+| `swiss-legal-research` | Query di ricerca giuridica, riferimenti BGE/DTF |
+| `swiss-legal-drafting` | Redazione documenti, contratti |
+| `swiss-legal-strategy` | Pianificazione processuale, valutazione rischi |
+| `swiss-citation-formats` | Formattazione citazioni BGE/ATF/DTF |
+| `swiss-document-analysis` | Analisi documenti, clausole, conformità |
+| `swiss-legal-translation` | Traduzione testi legali |
+| `adversarial-analysis` | Analisi avversariale a tre agenti |
+| `legal-intake` | Query vaghe o complesse — raffinamento socratico |
+| `data-protection-law` | DSG/FADP, GDPR, privacy |
+| `compliance-frameworks` | FINMA, GwG, conformità finanziaria |
+| `privacy-routing` | Rilevamento segreto professionale (Anwaltsgeheimnis) |
+| `legal-5step-framework` | Pipeline legale in 5 fasi con checkpoint |
 
 ---
 
-## Usage Examples
+## Server MCP (9)
 
-### Research
-```
-/bettercallclaude:research Art. 97 OR contractual liability precedents
-```
+| Server | Dati | Trasporto |
+|--------|------|-----------|
+| `swiss-caselaw` | 974.000+ decisioni, 8M citazioni (opencaselaw.ch) | SSE |
+| `entscheidsuche` | Ricerca full-text sentenze svizzere | HTTP |
+| `bge-search` | Ricerca e validazione BGE/ATF/DTF | HTTP |
+| `legal-citations` | Verifica e formattazione citazioni | HTTP |
+| `fedlex-sparql` | Legislazione federale svizzera (Fedlex) | HTTP |
+| `onlinekommentar` | Commentari dottrinali svizzeri | HTTP |
+| `legal-persona` | Strategia, drafting, analisi documenti | HTTP |
+| `tas-jurisprudence` | Arbitrato sportivo CAS/TAS | HTTP |
+| `ollama` | Classificazione privacy locale | Local |
 
-### Strategy
-```
-/bettercallclaude:strategy CHF 500,000 breach of contract, Zurich Commercial Court
-```
+---
 
-### Drafting
-```
-/bettercallclaude:draft Service agreement, 12 months, IP transfer clause
-```
+## Esempi
 
-### Full Workflow
+### Genera un documento
 ```
-/bettercallclaude:workflow --template litigation-prep "Art. 97 OR breach, CHF 300,000"
+/sententia:draft diffida di pagamento per Mario Rossi, CHF 8.500, scadenza 30 giorni
 ```
-
-### Adversarial Analysis
 ```
-/bettercallclaude:adversarial Tenant claims landlord breached Art. 259a OR
+/sententia:draft parere sulla validità di una clausola di non concorrenza
 ```
-
-### Briefing Session
 ```
-/bettercallclaude:briefing "Prepare full litigation for Art. 97 OR breach, CHF 500K, Zurich"
-/bettercallclaude:briefing --resume brief_20260225_contract
-/bettercallclaude:briefing --list
+/sententia:draft ricorso al Tribunale d'appello TI contro diniego permesso di costruzione
 ```
 
-### Prompt Refinement (when queries aren't getting good results)
+### Ricerca giuridica
 ```
-/bettercallclaude:legal --refine "my tenant is not paying"
-# → Asks clarifying questions, then reformulates into:
-# "Art. 257d OR -- Mietzinsrückstand, Kündigung und fristlose Räumung,
-#  Kanton Zürich, Vermieterperspektive, Forschungsantwort gewünscht"
+/sententia:research art. 97 CO responsabilità contrattuale precedenti DTF
+```
+```
+/sententia:research sentenze proprietà per piani taglio piante spazi comuni Ticino
 ```
 
-### Multi-Lingual
+### Analisi strategica
 ```
-/bettercallclaude:research art. 97 CO violation de contrat
-/bettercallclaude:translate @vertrag.md --to fr
+/sententia:strategy controversia locatizia CHF 50.000, Pretura Lugano
+```
+
+### Analisi avversariale
+```
+/sententia:adversarial il locatario sostiene violazione art. 259a CO
 ```
 
 ---
 
-## Tips
+## Configurazione template
 
-1. Be specific: "Art. 97 OR foreseeability" is better than "contract damages".
-2. Include citations: Reference articles and BGE numbers when you have them.
-3. Specify jurisdiction: Mention the canton for cantonal law questions.
-4. Choose language: Query in your preferred language (DE/FR/IT/EN).
-5. Use workflows: For complex matters, let the gateway coordinate multiple agents.
+Per usare `/sententia:draft` imposta nelle impostazioni del plugin:
+- **Letterhead template path** — percorso del tuo file `.docx` di carta intestata
+- **Output folder path** — cartella dove salvare i documenti generati
+- **Default canton** — es. `TI`
+- **Output language** — `IT`
 
 ---
 
-**BetterCallClaude v4.8.3 -- Swiss Legal Intelligence for Cowork Desktop**
+**Sententia v1.0.0 — Plugin di generazione documenti legali svizzeri per Claude Desktop**
 
-If the user provided additional input, respond to it in the context of this help reference.
+Se l'utente ha fatto una domanda, rispondile nel contesto di questa guida.
 
-## User Query
+## Query utente
 
 $ARGUMENTS

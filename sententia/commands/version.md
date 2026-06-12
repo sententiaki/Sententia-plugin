@@ -1,60 +1,53 @@
 ---
-description: "Display BetterCallClaude plugin version, installed components, and system status"
+description: "Mostra la versione di Sententia, i componenti installati e lo stato dei server MCP"
 ---
 
-# BetterCallClaude Version and Status
+# Sententia — Versione e Stato
 
-When this command is invoked, display the plugin status report below. Check actual MCP server availability by attempting to list their tools. Replace status indicators accordingly.
+Quando questo comando viene invocato, mostra il report di stato qui sotto. Verifica la disponibilità dei server MCP tentando di usare i loro tool. Aggiorna gli indicatori di stato di conseguenza.
 
-## Status Report
+## Report di stato
 
-Output the following formatted block:
+Mostra il seguente blocco formattato:
 
 ```
-======================================================
-  BetterCallClaude - Swiss Legal Intelligence Plugin
-======================================================
-  Version:      4.8.3
-  Format:       Claude Code Plugin (Cowork Desktop)
-  Author:       Federico Cesconi
-  License:      AGPL-3.0
-======================================================
+═══════════════════════════════════════════════════
+  SENTENTIA — Plugin di generazione documenti legali
+═══════════════════════════════════════════════════
+  Versione:   1.0.0
+  Formato:    Claude Code Plugin (Cowork Desktop)
+  Repository: github.com/sententiaki/Sententia-plugin
+  Licenza:    AGPL-3.0
+═══════════════════════════════════════════════════
 
-  COMMANDS (24)
-  -------------
-  [x] legal          - Intelligent gateway and router
-  [x] research       - BGE/ATF/DTF precedent search
-  [x] strategy       - Litigation strategy and risk
-  [x] draft          - Legal document generation
-  [x] federal        - Federal law mode
-  [x] cantonal       - Cantonal law mode
-  [x] cite           - Citation formatting
-  [x] doc-analyze    - Document analysis
-  [x] nda-triage     - NDA triage (GREEN/YELLOW/RED)
-  [x] precedent      - Precedent chain analysis
-  [x] validate       - Batch citation validation
-  [x] adversarial    - Three-agent adversarial analysis
-  [x] workflow       - Multi-agent pipeline execution
-  [x] briefing       - Structured pre-execution briefing
-  [x] translate      - Legal translation DE/FR/IT/EN
-  [x] legal-5step    - 5-step end-to-end legal pipeline
-  [x] start          - Welcome and onboarding
-  [x] doctor         - MCP server diagnostics
-  [x] setup          - Alias for start (deprecated, v5.0 removal)
-  [x] version        - This status display
-  [x] refine         - Prompt refinement and reformulation
-  [x] summarize      - Consolidate multi-agent output
-  [x] privacy        - View/change privacy mode
-  [x] help           - Command reference
+  COMANDI
+  -------
+  [x] draft          - Genera documento su template (pipeline Sententia)
+  [x] legal          - Gateway intelligente
+  [x] research       - Ricerca BGE/ATF/DTF
+  [x] strategy       - Strategia processuale
+  [x] adversarial    - Analisi avversariale
+  [x] legal-5step    - Pipeline 5 fasi
+  [x] briefing       - Briefing strutturato
+  [x] doc-analyze    - Analisi documenti
+  [x] validate       - Validazione citazioni
+  [x] cite           - Formattazione citazioni
+  [x] translate      - Traduzione legale DE/FR/IT/EN
+  [x] summarize      - Sintesi output
+  [x] refine         - Affinamento query
+  [x] cantonal       - Diritto cantonale
+  [x] federal        - Diritto federale
+  [x] precedent      - Catene di precedenti
+  [x] privacy        - Modalità privacy
+  [x] version        - Questo report
+  [x] help           - Guida comandi
 
-  PLAYBOOK
-  --------
-  Supports bettercallclaude.local.md for firm-specific
-  positions, risk thresholds, and output preferences.
-  Compatible with legal.local.md (Anthropic format).
-
-  AGENTS (20)
+  AGENTI (21)
   -----------
+  Sententia:
+  [x] doc-reviewer      - Review indipendente documenti generati
+
+  Da BetterCallClaude:
   [x] researcher      [x] strategist     [x] drafter
   [x] citation        [x] compliance     [x] data-protection
   [x] risk            [x] procedure      [x] translator
@@ -63,7 +56,7 @@ Output the following formatted block:
   [x] judicial        [x] briefing       [x] orchestrator
   [x] summarizer      [x] prompt-engineer
 
-  SKILLS (12)
+  SKILL (12)
   ----------
   [x] swiss-legal-research     [x] swiss-legal-drafting
   [x] swiss-legal-strategy     [x] swiss-citation-formats
@@ -72,51 +65,42 @@ Output the following formatted block:
   [x] compliance-frameworks    [x] data-protection-law
   [x] legal-intake             [x] legal-5step-framework
 
-  MCP SERVERS (9)
-  ---------------
-  [ ] entscheidsuche    - Swiss court decision search        (HTTP)
-  [ ] bge-search        - Federal Supreme Court decisions    (HTTP)
-  [ ] legal-citations   - Citation verification              (HTTP)
-  [ ] fedlex-sparql     - Federal legislation database       (HTTP)
-  [ ] onlinekommentar   - Legal commentary access            (HTTP)
-  [ ] legal-persona     - Document intelligence (strategy/draft) (HTTP)
-  [ ] tas-jurisprudence - CAS/TAS sports arbitration awards  (HTTP)
-  [ ] swiss-caselaw     - Case law, citation graphs, doctrine (SSE)
-  [ ] ollama            - Privacy classification             (Local)
+  SERVER MCP (9)
+  --------------
+  [ ] swiss-caselaw     - 974K+ decisioni, 8M citazioni  (SSE)
+  [ ] entscheidsuche    - Ricerca sentenze svizzere       (HTTP)
+  [ ] bge-search        - Ricerca BGE/ATF/DTF             (HTTP)
+  [ ] legal-citations   - Verifica citazioni              (HTTP)
+  [ ] fedlex-sparql     - Legislazione federale           (HTTP)
+  [ ] onlinekommentar   - Commentari dottrinali           (HTTP)
+  [ ] legal-persona     - Strategia e drafting            (HTTP)
+  [ ] tas-jurisprudence - Arbitrato CAS/TAS               (HTTP)
+  [ ] ollama            - Privacy locale                  (Local)
 
-  HTTP Service: https://mcp.bettercallclaude.ch
-  Run /bettercallclaude:doctor to check connectivity
+  Esegui /sententia:privacy per la modalità privacy attiva.
 
-  LANGUAGES
-  ---------
-  [x] German (DE)   - OR, ZGB, StGB, BGE
-  [x] French (FR)   - CO, CC, CP, ATF
-  [x] Italian (IT)  - CO, CC, CP, DTF
-  [x] English (EN)  - Swiss-specific terminology
+  LINGUE
+  ------
+  [x] Italiano (IT)   - CO, CC, CP, DTF
+  [x] Tedesco (DE)    - OR, ZGB, StGB, BGE
+  [x] Francese (FR)   - CO, CC, CP, ATF
+  [x] Inglese (EN)    - Terminologia svizzera
 
-  JURISDICTIONS
+  GIURISDIZIONI
   -------------
-  [x] Federal law (Bundesrecht)
-  [x] All 26 Swiss cantons supported
+  [x] Diritto federale
+  [x] Tutti i 26 cantoni svizzeri
+  [x] Cantone di default: TI
 
-  SYSTEM REQUIREMENTS
-  -------------------
-  - Claude Code or Cowork with plugin support
-  - MCP servers connect via HTTP (no local setup needed)
-  - No API keys required for any functionality
-  - Node.js 18+ required for ollama server
-
-======================================================
-  https://github.com/fedec65/BetterCallClaude
-======================================================
+═══════════════════════════════════════════════════
+  github.com/sententiaki/Sententia-plugin
+═══════════════════════════════════════════════════
 ```
 
-For each MCP server, attempt to verify availability:
-- If tools from that server respond, mark as `[x]` (active).
-- If tools are unavailable, mark as `[ ]` (not configured).
+Per ogni server MCP, verifica la disponibilità:
+- Se i tool rispondono, segna `[x]` (attivo)
+- Se non disponibili, segna `[ ]` (non raggiungibile)
 
-If the user asks a follow-up question, answer it in context of the version and status information.
-
-## User Query
+## Query utente
 
 $ARGUMENTS
