@@ -1,70 +1,64 @@
 ---
-description: "Sententia document pipeline: generates any Swiss legal document (lettera, diffida, parere, ricorso, contratto, atto) on the studio letterhead template with footnote citations, then runs an independent review agent to verify all legal sources. Final Word document is saved and opened automatically."
+description: "Sententia document pipeline: uses the swiss-legal-drafter agent to research and draft any Swiss legal document (lettera, diffida, parere, ricorso, contratto), then inserts the result into the studio letterhead template with numbered footnote citations, runs the sententia-doc-reviewer to verify all sources, and opens the final Word file."
 ---
 
-Sei invocato tramite `/sententia:draft`. Esegui la pipeline di generazione documenti Sententia in tre fasi sequenziali.
+Sei invocato tramite `/sententia:draft`. Esegui la pipeline di generazione documenti Sententia.
 
 ## Pipeline
 
-### Fase 1 — Generazione (agente: sententia-doc-generator)
+### Fase 1 — Redazione legale
 
-Lancia l'agente `sententia-doc-generator` con la richiesta dell'utente.
+Usa l'agente `swiss-legal-drafter` per generare il contenuto del documento.
 
-L'agente:
-- Identifica il tipo di documento e i dati disponibili
-- Ricerca le basi legali e la giurisprudenza rilevante tramite i server MCP
-- Redige il documento completo con note a piè di pagina numerate
-- Lascia `[segnaposto]` per i dati mancanti
-- Inserisce il contenuto nel template di carta intestata configurato
+Istruzioni aggiuntive rispetto al comportamento standard del drafter:
+- Le fonti (DTF/BGE, articoli di legge, commentari) devono essere formattate come **note a piè di pagina numerate** (¹ ² ³ …), non inline nel testo.
+- Formato note: `¹ DTF 136 III 261, consid. 3.2, p. 265; art. 712a cpv. 1 CC.`
+- Ogni dato mancante (indirizzo, importo, data, ecc.) deve essere lasciato come `[segnaposto]` visibile.
+- Il titolo del documento è generato dinamicamente in base alla richiesta — non è fisso.
+- Output: testo completo del documento (non un file — il template viene applicato nel passo successivo).
 
-Attendi che l'agente completi il documento prima di procedere.
+### Fase 2 — Inserimento nel template Word
 
-### Fase 2 — Review indipendente (agente: sententia-doc-reviewer)
+Prendi il testo prodotto dal drafter e inseriscilo nel template di carta intestata.
 
-Lancia l'agente `sententia-doc-reviewer` passandogli il percorso del documento generato.
+1. Leggi il percorso del template da `template_path` nelle impostazioni del plugin.
+   - Se non impostato, chiedi: *"Per generare il documento ho bisogno del percorso del tuo template Word. Puoi impostarlo nelle impostazioni del plugin ('Letterhead template path') oppure dirmi dove si trova."*
+2. Usa lo skill `anthropic-skills:docx` per aprire il template e inserire:
+   - Data nella posizione data
+   - Titolo/Oggetto nella posizione oggetto
+   - Corpo del documento
+   - Note a piè di pagina come vere note Word
+3. Salva il file nella cartella `output_folder` con nome descrittivo:
+   - Formato: `[TipoDocumento]-[NomeDestinatario]-[YYYY-MM-DD].docx`
+   - Esempio: `Diffida-Rossi-2026-06-12.docx`
 
-L'agente:
-- Verifica ogni citazione DTF/BGE in modo indipendente (considerando + pagina + pertinenza)
-- Controlla ogni articolo di legge
-- Identifica lacune nelle basi legali
-- Applica le correzioni direttamente al file
-- Produce un report di review strutturato
+### Fase 3 — Review indipendente
 
-Attendi il completamento della review.
+Lancia l'agente `sententia-doc-reviewer` passandogli il percorso del file generato.
 
-### Fase 3 — Consegna
+L'agente verifica ogni citazione in modo indipendente e corregge eventuali errori.
 
-1. Apri il documento corretto in Word (usando `mcp__Word__By_Anthropic___open_document` o `Bash open`).
-2. Mostra in chat il **report di review** completo dell'agente reviewer.
-3. Elenca i `[segnaposto]` rimasti da compilare manualmente.
-4. Mostra il percorso del file salvato.
+### Fase 4 — Consegna
 
-## Formato output in chat
+1. Apri il documento corretto in Word.
+2. Mostra in chat il report di review.
+3. Elenca i `[segnaposto]` da compilare.
+
+## Output in chat
 
 ```
 ✅ DOCUMENTO GENERATO E VERIFICATO
 
-File: [percorso completo]
+File: [percorso]
 Tipo: [tipo documento]
-Destinatario: [nome o segnaposto]
 
-REVIEW: [stato — APPROVATO / APPROVATO CON CORREZIONI / RICHIEDE REVISIONE MANUALE]
-[report review sintetico]
+REVIEW: [APPROVATO / APPROVATO CON CORREZIONI / RICHIEDE REVISIONE MANUALE]
+[report sintetico]
 
 SEGNAPOSTO DA COMPILARE:
-• [elenco segnaposto rimasti]
+• [lista segnaposto]
 
 Il documento è aperto in Word.
 ```
-
-## Scope del plugin
-
-Usa esclusivamente gli agenti, le skill e i server MCP di Sententia per tutto il lavoro legale. Non delegare a skill o agenti esterni. Le operazioni su file (.docx, apertura Word) sono esenti.
-
-## Configurazione richiesta
-
-Se `template_path` non è impostato nelle impostazioni del plugin, chiedi all'utente il percorso del template prima di procedere:
-
-> "Per generare il documento ho bisogno del percorso del tuo template Word di carta intestata. Puoi trovarlo in Finder e trascinarlo qui, oppure andare nelle impostazioni del plugin e impostare il campo 'Letterhead template path'."
 
 $ARGUMENTS
