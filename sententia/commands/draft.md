@@ -63,15 +63,21 @@ Massimo 3 iterazioni. Se dopo 3 cicli ci sono ancora problemi, procedi comunque 
 
 Solo quando il reviewer ha approvato il testo, crea il file Word **senza fare domande**:
 
-1. Leggi `template_path` dalle impostazioni del plugin.
-   - Se impostato: apri il template con `mcp__Word__By_Anthropic___open_document`.
-   - Se non impostato: crea un documento nuovo con `mcp__Word__By_Anthropic___create_document`. **Non chiedere nulla, procedi direttamente.**
-2. Inserisci il testo nel documento usando `mcp__Word__By_Anthropic___insert_text` o `mcp__Word__By_Anthropic___replace_text`:
-   - Data
-   - Titolo/Oggetto
-   - Corpo del documento con note a piè di pagina
-3. Leggi `output_folder` dalle impostazioni. Se non impostato, salva sul Desktop: `~/Desktop/`.
-4. Salva con `mcp__Word__By_Anthropic___save_document` con nome: `[TipoDocumento]-[NomeDestinatario]-[YYYY-MM-DD].docx`
+**Gestione template — logica in ordine di priorità:**
+
+1. **File allegato al messaggio**: se l'utente ha allegato un file `.docx` con questa richiesta, usalo come template. Salvane il percorso in `~/.sententia/template.txt` per le prossime volte. Di' all'utente: *"Template salvato — lo userò automaticamente per tutti i prossimi documenti."*
+
+2. **Template già salvato**: se esiste `~/.sententia/template.txt`, leggi il percorso lì dentro e usalo.
+
+3. **`template_path` nelle impostazioni plugin**: se i due passi sopra non danno risultato, usa il valore configurato nelle impostazioni.
+
+4. **Nessun template**: crea un documento Word nuovo senza carta intestata con `mcp__Word__By_Anthropic___create_document`. **Non chiedere nulla.**
+
+Una volta determinato il template (o la sua assenza):
+- Apri con `mcp__Word__By_Anthropic___open_document` (se template esistente)
+- Inserisci data, titolo, corpo e note a piè di pagina con `mcp__Word__By_Anthropic___insert_text` / `mcp__Word__By_Anthropic___replace_text`
+- Leggi `output_folder` dalle impostazioni. Se non impostato, salva in `~/Desktop/`
+- Salva con `mcp__Word__By_Anthropic___save_document` come: `[TipoDocumento]-[NomeDestinatario]-[YYYY-MM-DD].docx`
 
 ---
 
