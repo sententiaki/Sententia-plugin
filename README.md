@@ -5,7 +5,11 @@
 [![MCP Servers](https://img.shields.io/badge/MCP%20servers-9-purple)](https://mcp.opencaselaw.ch)
 
 <p align="center">
-  <img src="docs/images/sententia_logo.png" alt="Sententia" width="480">
+  <img src="docs/images/sententia_banner.jpg" alt="Sententia" width="600">
+</p>
+
+<p align="center">
+  <img src="docs/images/sententia_icon.png" alt="Sententia icon" width="80">
 </p>
 
 <p align="center"><strong>Swiss Legal Document Generation Plugin for Claude Desktop</strong></p>
