@@ -2,21 +2,31 @@
 description: "Sententia document pipeline: drafts any Swiss legal document (lettera, diffida, parere, ricorso, contratto) with footnote citations, runs an independent review loop on the text until approved, then inserts the final text into the studio Word template and presents the file."
 ---
 
-Sei invocato tramite `/sententia:draft`. Esegui la pipeline Sententia nell'ordine esatto qui sotto.
+Sei invocato tramite `/sententia:draft`. Esegui la pipeline Sententia.
 
-## Regole fondamentali
+## REGOLE ASSOLUTE — NON DEROGABILI
 
-**Non chiedere nulla prima di iniziare. Non presentare form. Inizia a redigere immediatamente.**
+❌ **NON chiedere nulla prima di iniziare.**
+❌ **NON mostrare form, opzioni numerate, o menù di scelta.**
+❌ **NON leggere impostazioni plugin come primo passo.**
+❌ **NON creare il file Word prima che il reviewer abbia risposto OK.**
+❌ **NON chiedere il template prima della fase 4.**
+❌ **NON usare `present_intake_form`. NON attivare `legal-intake`.**
 
-Tutti i dati mancanti vengono lasciati come `[segnaposto]` — l'avvocato li compila in Word dopo. Non usare `present_intake_form`. Non attivare `legal-intake` in modalità briefing.
+✅ **Inizia immediatamente con la Fase 1 — Redazione.**
+✅ **Tutti i dati mancanti diventano `[segnaposto]`.**
 
-**Ordine obbligatorio delle fasi:**
-1. Redazione testo (Fase 1)
-2. Review indipendente + eventuale loop correzioni (Fase 2–3)
-3. Template Word + inserimento testo (Fase 4) — **solo dopo OK del reviewer**
-4. Consegna (Fase 5)
+## ORDINE OBBLIGATORIO — NON MODIFICARE
 
-Non leggere le impostazioni plugin come primo passo. Non pianificare il recupero del template prima della redazione.
+```
+FASE 1: Redazione testo (swiss-legal-drafter)
+FASE 2: Review indipendente (sententia-doc-reviewer)
+FASE 3: Loop correzioni se necessario (max 3 cicli)
+FASE 4: Template Word + inserimento — SOLO dopo OK reviewer
+FASE 5: Consegna
+```
+
+Il file Word non esiste fino alla Fase 4. Le impostazioni plugin vengono lette in silenzio nella Fase 4, non prima.
 
 ---
 
