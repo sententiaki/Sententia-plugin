@@ -1,70 +1,92 @@
 ---
-description: "Sententia document pipeline: uses the swiss-legal-drafter agent to research and draft any Swiss legal document (lettera, diffida, parere, ricorso, contratto), then inserts the result into the studio letterhead template with numbered footnote citations, runs the sententia-doc-reviewer to verify all sources, and opens the final Word file."
+description: "Sententia document pipeline: drafts any Swiss legal document (lettera, diffida, parere, ricorso, contratto) with footnote citations, runs an independent review loop on the text until approved, then inserts the final text into the studio Word template and presents the file."
 ---
 
-Sei invocato tramite `/sententia:draft`. Esegui la pipeline di generazione documenti Sententia.
+Sei invocato tramite `/sententia:draft`. Esegui la pipeline Sententia.
 
 ## Regola fondamentale — nessuna domanda preliminare
 
-**Non chiedere nulla all'utente prima di iniziare. Non presentare form. Non fare domande di intake. Inizia a redigere immediatamente.**
+**Non chiedere nulla prima di iniziare. Non presentare form. Inizia a redigere immediatamente.**
 
-Tutti i dati mancanti vengono lasciati come `[segnaposto]` nel documento — l'avvocato li compila a mano in Word dopo. Questo è il comportamento atteso e corretto.
+Tutti i dati mancanti vengono lasciati come `[segnaposto]` — l'avvocato li compila in Word dopo. Non usare `present_intake_form`. Non attivare `legal-intake` in modalità briefing.
 
-Non usare il tool `present_intake_form`. Non attivare la skill `legal-intake` in modalità briefing. Non chiedere chiarimenti prima di avere un documento scritto.
+---
 
 ## Pipeline
 
-### Fase 1 — Redazione legale
+### Fase 1 — Drafter: testo pronto per Word
 
-Usa l'agente `swiss-legal-drafter` per generare il contenuto del documento.
+Usa l'agente `swiss-legal-drafter` per produrre il testo completo del documento.
 
-Istruzioni aggiuntive rispetto al comportamento standard del drafter:
-- Le fonti (DTF/BGE, articoli di legge, commentari) devono essere formattate come **note a piè di pagina numerate** (¹ ² ³ …), non inline nel testo.
-- Formato note: `¹ DTF 136 III 261, consid. 3.2, p. 265; art. 712a cpv. 1 CC.`
-- Ogni dato mancante (indirizzo, importo, data, ecc.) deve essere lasciato come `[segnaposto]` visibile.
-- Il titolo del documento è generato dinamicamente in base alla richiesta — non è fisso.
-- Output: testo completo del documento (non un file — il template viene applicato nel passo successivo).
+Il testo prodotto deve essere già nel formato finale da inserire in Word:
+- Titolo generato dinamicamente in base alla richiesta
+- Corpo completo con tutti i paragrafi
+- **Note a piè di pagina numerate** (¹ ² ³ …) — non citazioni inline
+- Formato note: `¹ DTF 136 III 261, consid. 3.2, p. 265; art. 102 cpv. 1 CO.`
+- `[segnaposto]` per ogni dato mancante (indirizzo, nome completo, importo, data, ecc.)
+- Data del giorno in formato `Lugano, GG mese AAAA`
 
-### Fase 2 — Inserimento nel template Word
+Output: **testo puro** (non un file Word — quello viene creato solo dopo l'approvazione del review).
 
-Prendi il testo prodotto dal drafter e inseriscilo nel template di carta intestata.
+---
+
+### Fase 2 — Reviewer: valutazione del testo
+
+Passa il testo all'agente `sententia-doc-reviewer` per la valutazione.
+
+Il reviewer lavora **sul testo**, non su un file Word. Valuta:
+- Correttezza di ogni citazione DTF/BGE (numero, considerando, pagina, pertinenza)
+- Correttezza degli articoli di legge citati
+- Lacune nelle basi legali
+- Eventuali consigli migliorativi
+
+Il reviewer produce una delle tre risposte:
+- **OK** — il testo è approvato, nessuna correzione necessaria
+- **CORREZIONI** — lista precisa di cosa correggere, con le versioni corrette già pronte
+- **REVISIONE MANUALE** — problema che richiede valutazione dell'avvocato
+
+---
+
+### Fase 3 — Loop di correzione (se necessario)
+
+Se il reviewer risponde **CORREZIONI**:
+1. Passa le correzioni al drafter
+2. Il drafter aggiorna il testo applicando le correzioni indicate
+3. Torna alla Fase 2 — il reviewer rivaluta il testo aggiornato
+4. Ripeti finché il reviewer risponde **OK** o **REVISIONE MANUALE**
+
+Massimo 3 iterazioni. Se dopo 3 cicli ci sono ancora problemi, procedi comunque segnalando le correzioni non risolte all'avvocato.
+
+---
+
+### Fase 4 — Inserimento nel template Word (solo dopo OK del reviewer)
+
+Solo quando il reviewer ha approvato il testo:
 
 1. Leggi il percorso del template da `template_path` nelle impostazioni del plugin.
-   - Se non impostato, chiedi: *"Per generare il documento ho bisogno del percorso del tuo template Word. Puoi impostarlo nelle impostazioni del plugin ('Letterhead template path') oppure dirmi dove si trova."*
 2. Usa lo skill `anthropic-skills:docx` per aprire il template e inserire:
-   - Data nella posizione data
-   - Titolo/Oggetto nella posizione oggetto
+   - Data
+   - Titolo/Oggetto
    - Corpo del documento
    - Note a piè di pagina come vere note Word
-3. Salva il file nella cartella `output_folder` con nome descrittivo:
-   - Formato: `[TipoDocumento]-[NomeDestinatario]-[YYYY-MM-DD].docx`
-   - Esempio: `Diffida-Rossi-2026-06-12.docx`
+3. Salva nella cartella `output_folder` con nome:
+   - `[TipoDocumento]-[NomeDestinatario]-[YYYY-MM-DD].docx`
 
-### Fase 3 — Review indipendente
+---
 
-Lancia l'agente `sententia-doc-reviewer` passandogli il percorso del file generato.
+### Fase 5 — Presentazione
 
-L'agente verifica ogni citazione in modo indipendente e corregge eventuali errori.
-
-### Fase 4 — Consegna
-
-1. Apri il documento corretto in Word.
-2. Mostra in chat il report di review.
-3. Elenca i `[segnaposto]` da compilare.
-
-## Output in chat
+1. Apri il file in Word.
+2. Mostra in chat:
 
 ```
-✅ DOCUMENTO GENERATO E VERIFICATO
+✅ DOCUMENTO PRONTO
 
 File: [percorso]
-Tipo: [tipo documento]
-
-REVIEW: [APPROVATO / APPROVATO CON CORREZIONI / RICHIEDE REVISIONE MANUALE]
-[report sintetico]
+Review: [APPROVATO / APPROVATO CON CORREZIONI / nota correzioni non risolte]
 
 SEGNAPOSTO DA COMPILARE:
-• [lista segnaposto]
+• [lista segnaposto rimasti]
 
 Il documento è aperto in Word.
 ```
