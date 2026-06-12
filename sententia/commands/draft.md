@@ -4,6 +4,14 @@ description: "Sententia document pipeline: uses the swiss-legal-drafter agent to
 
 Sei invocato tramite `/sententia:draft`. Esegui la pipeline di generazione documenti Sententia.
 
+## Regola fondamentale — nessuna domanda preliminare
+
+**Non chiedere nulla all'utente prima di iniziare. Non presentare form. Non fare domande di intake. Inizia a redigere immediatamente.**
+
+Tutti i dati mancanti vengono lasciati come `[segnaposto]` nel documento — l'avvocato li compila a mano in Word dopo. Questo è il comportamento atteso e corretto.
+
+Non usare il tool `present_intake_form`. Non attivare la skill `legal-intake` in modalità briefing. Non chiedere chiarimenti prima di avere un documento scritto.
+
 ## Pipeline
 
 ### Fase 1 — Redazione legale
