@@ -1,6 +1,6 @@
 {
   "name": "sententia",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Sententia — Swiss legal document generation plugin. Drafts letters, diffide, pareri, and all legal documents on your studio letterhead with cited Swiss legal sources (BGE/DTF, Fedlex, commentaries). Includes an independent review agent for source verification.",
   "author": { "name": "Sententia" },
   "userConfig": {
