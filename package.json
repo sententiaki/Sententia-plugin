@@ -1,17 +1,17 @@
 {
-  "name": "bettercallclaude",
-  "version": "4.8.1",
+  "name": "sententia-plugin",
+  "version": "1.0.0",
   "private": true,
-  "description": "Swiss Legal Intelligence Plugin for Claude",
+  "description": "Sententia — Swiss legal document generation plugin for Claude",
   "scripts": {
-    "build:ollama": "cd bettercallclaude/mcp-servers/ollama && npm install && npm run build:bundle",
+    "build:ollama": "cd sententia/mcp-servers/ollama && npm install && npm run build:bundle",
     "package": "bash scripts/package-plugin.sh"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fedec65/bettercallclaude"
+    "url": "https://github.com/sententiaki/Sententia-plugin"
   },
-  "author": "Federico Cesconi",
+  "author": "Sententia",
   "license": "AGPL-3.0",
   "engines": {
     "node": ">=20.0.0"

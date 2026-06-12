@@ -1,0 +1,50 @@
+{
+  "name": "sententia",
+  "version": "1.0.0",
+  "description": "Sententia — Swiss legal document generation plugin. Drafts letters, diffide, pareri, and all legal documents on your studio letterhead with cited Swiss legal sources (BGE/DTF, Fedlex, commentaries). Includes an independent review agent for source verification.",
+  "author": { "name": "Sententia" },
+  "userConfig": {
+    "template_path": {
+      "type": "string",
+      "title": "Letterhead template path",
+      "description": "Absolute path to your studio letterhead Word template (.docx). This file is used as the base for every generated document.",
+      "default": "",
+      "sensitive": false
+    },
+    "output_folder": {
+      "type": "string",
+      "title": "Output folder path",
+      "description": "Absolute path to the folder where generated documents will be saved. Example: /Users/yourname/Documents/Sententia/output",
+      "default": "",
+      "sensitive": false
+    },
+    "ollama_host": {
+      "type": "string",
+      "title": "Ollama host URL",
+      "description": "URL of the Ollama host used by the bundled ollama MCP server for local-only translation and summarisation.",
+      "default": "http://localhost:11434",
+      "sensitive": false
+    },
+    "default_jurisdiction": {
+      "type": "string",
+      "title": "Default Swiss canton",
+      "description": "Default Swiss canton code for cantonal research (e.g. ZH, BE, GE, TI, VD). Leave blank for federal-only queries.",
+      "default": "TI",
+      "sensitive": false
+    },
+    "output_language": {
+      "type": "string",
+      "title": "Output language",
+      "description": "Preferred output language for agents and documents. One of: DE, FR, IT, EN.",
+      "default": "IT",
+      "sensitive": false
+    },
+    "privacy_mode": {
+      "type": "string",
+      "title": "Privacy mode",
+      "description": "Privacy routing mode: strict, balanced, or cloud.",
+      "default": "balanced",
+      "sensitive": false
+    }
+  }
+}

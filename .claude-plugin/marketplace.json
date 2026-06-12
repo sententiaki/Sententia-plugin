@@ -1,20 +1,20 @@
 {
-  "name": "bettercallclaude-marketplace",
+  "name": "sententia-marketplace",
   "owner": {
-    "name": "Federico Cesconi",
-    "email": "info@bettercallclaude.ch"
+    "name": "Sententia",
+    "email": ""
   },
   "plugins": [
     {
-      "name": "bettercallclaude",
-      "description": "Swiss Legal Intelligence -- BGE/ATF/DTF precedent research, case strategy, legal drafting, and citation verification across all 26 Swiss cantons with Anwaltsgeheimnis privacy protection.",
-      "version": "4.8.3",
-      "source": "./bettercallclaude",
+      "name": "sententia",
+      "description": "Sententia — Swiss legal document generation plugin. Drafts any legal document on your studio letterhead with cited Swiss sources (BGE/DTF, Fedlex, commentaries) and an independent review agent.",
+      "version": "1.0.0",
+      "source": "./sententia",
       "author": {
-        "name": "Federico Cesconi"
+        "name": "Sententia"
       },
-      "homepage": "https://bettercallclaude.ch",
-      "repository": "https://github.com/fedec65/bettercallclaude",
+      "homepage": "https://github.com/sententiaki/Sententia-plugin",
+      "repository": "https://github.com/sententiaki/Sententia-plugin",
       "license": "AGPL-3.0",
       "category": "legal"
     }
