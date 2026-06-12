@@ -61,16 +61,18 @@ Massimo 3 iterazioni. Se dopo 3 cicli ci sono ancora problemi, procedi comunque 
 
 ### Fase 4 — Inserimento nel template Word (solo dopo OK del reviewer)
 
-Solo quando il reviewer ha approvato il testo:
+Solo quando il reviewer ha approvato il testo, crea il file Word **senza fare domande**:
 
-1. Leggi il percorso del template da `template_path` nelle impostazioni del plugin.
-2. Usa lo skill `anthropic-skills:docx` per aprire il template e inserire:
+1. Leggi `template_path` dalle impostazioni del plugin.
+   - Se impostato: usa quel file come base per il documento.
+   - Se non impostato o non trovato: crea un file Word nuovo senza template — **non chiedere nulla, procedi direttamente**.
+2. Usa lo skill `anthropic-skills:docx` per inserire nel documento:
    - Data
    - Titolo/Oggetto
    - Corpo del documento
    - Note a piè di pagina come vere note Word
-3. Salva nella cartella `output_folder` con nome:
-   - `[TipoDocumento]-[NomeDestinatario]-[YYYY-MM-DD].docx`
+3. Leggi `output_folder` dalle impostazioni. Se non impostato, salva sul Desktop dell'utente.
+4. Salva con nome: `[TipoDocumento]-[NomeDestinatario]-[YYYY-MM-DD].docx`
 
 ---
 
