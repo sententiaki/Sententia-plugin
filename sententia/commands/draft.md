@@ -61,17 +61,21 @@ Massimo 3 iterazioni. Se dopo 3 cicli ci sono ancora problemi, procedi comunque 
 
 ### Fase 4 — Inserimento nel template Word (solo dopo OK del reviewer)
 
-Solo quando il reviewer ha approvato il testo, crea il file Word **senza fare domande**:
+Solo quando il reviewer ha approvato il testo, gestisci il template in questo ordine:
 
 **Gestione template — logica in ordine di priorità:**
 
-1. **File allegato al messaggio**: se l'utente ha allegato un file `.docx` con questa richiesta, usalo come template. Salvane il percorso in `~/.sententia/template.txt` per le prossime volte. Di' all'utente: *"Template salvato — lo userò automaticamente per tutti i prossimi documenti."*
+1. **Template già salvato**: se esiste `~/.sententia/template.txt`, leggi il percorso lì dentro e usalo direttamente — nessuna domanda.
 
-2. **Template già salvato**: se esiste `~/.sententia/template.txt`, leggi il percorso lì dentro e usalo.
+2. **`template_path` nelle impostazioni plugin**: se il file sopra non esiste, usa il valore configurato nelle impostazioni — nessuna domanda.
 
-3. **`template_path` nelle impostazioni plugin**: se i due passi sopra non danno risultato, usa il valore configurato nelle impostazioni.
+3. **Nessun template salvato**: chiedi all'utente di caricare la carta intestata dello studio **una volta sola**:
 
-4. **Nessun template**: crea un documento Word nuovo senza carta intestata con `mcp__Word__By_Anthropic___create_document`. **Non chiedere nulla.**
+   > *"Il testo è pronto e approvato. Per creare il documento su carta intestata, allega qui il file Word (.docx) del tuo studio. Lo userò automaticamente per tutti i prossimi documenti — non ti sarà chiesto di nuovo."*
+
+   Quando l'utente allega il file `.docx`: salvane il percorso in `~/.sententia/template.txt`, poi di' *"Template salvato — lo userò automaticamente per tutti i prossimi documenti."*
+
+   Se l'utente non allega nulla e risponde di procedere comunque: crea un documento Word nuovo senza carta intestata con `mcp__Word__By_Anthropic___create_document`.
 
 Una volta determinato il template (o la sua assenza):
 - Apri con `mcp__Word__By_Anthropic___open_document` (se template esistente)
