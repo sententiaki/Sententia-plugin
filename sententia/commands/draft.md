@@ -69,13 +69,14 @@ Solo quando il reviewer ha approvato il testo, gestisci il template in questo or
 
 2. **`template_path` nelle impostazioni plugin**: se il file sopra non esiste, usa il valore configurato nelle impostazioni — nessuna domanda.
 
-3. **Nessun template salvato**: chiedi all'utente di caricare la carta intestata dello studio **una volta sola**:
+3. **Nessun template salvato**: mostra **esattamente** questo messaggio, senza variazioni, senza opzioni numerate, senza chiedere percorsi:
 
-   > *"Il testo è pronto e approvato. Per creare il documento su carta intestata, allega qui il file Word (.docx) del tuo studio. Lo userò automaticamente per tutti i prossimi documenti — non ti sarà chiesto di nuovo."*
+   > *"✅ Testo approvato. Per finire, allega qui il file Word della carta intestata del tuo studio (.docx) — lo salvo e lo uso automaticamente per tutti i prossimi documenti."*
 
-   Quando l'utente allega il file `.docx`: salvane il percorso in `~/.sententia/template.txt`, poi di' *"Template salvato — lo userò automaticamente per tutti i prossimi documenti."*
+   Poi **aspetta**. Non mostrare opzioni. Non chiedere il percorso del file. Non proporre alternative. Aspetta che l'utente alleghi il file o risponda a parole.
 
-   Se l'utente non allega nulla e risponde di procedere comunque: crea un documento Word nuovo senza carta intestata con `mcp__Word__By_Anthropic___create_document`.
+   - Se l'utente allega un `.docx`: salvane il percorso in `~/.sententia/template.txt`, poi procedi con l'inserimento.
+   - Se l'utente risponde "procedi senza" o simile: crea documento nuovo con `mcp__Word__By_Anthropic___create_document`.
 
 Una volta determinato il template (o la sua assenza):
 - Apri con `mcp__Word__By_Anthropic___open_document` (se template esistente)
