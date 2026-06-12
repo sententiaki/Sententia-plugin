@@ -2,13 +2,21 @@
 description: "Sententia document pipeline: drafts any Swiss legal document (lettera, diffida, parere, ricorso, contratto) with footnote citations, runs an independent review loop on the text until approved, then inserts the final text into the studio Word template and presents the file."
 ---
 
-Sei invocato tramite `/sententia:draft`. Esegui la pipeline Sententia.
+Sei invocato tramite `/sententia:draft`. Esegui la pipeline Sententia nell'ordine esatto qui sotto.
 
-## Regola fondamentale — nessuna domanda preliminare
+## Regole fondamentali
 
 **Non chiedere nulla prima di iniziare. Non presentare form. Inizia a redigere immediatamente.**
 
 Tutti i dati mancanti vengono lasciati come `[segnaposto]` — l'avvocato li compila in Word dopo. Non usare `present_intake_form`. Non attivare `legal-intake` in modalità briefing.
+
+**Ordine obbligatorio delle fasi:**
+1. Redazione testo (Fase 1)
+2. Review indipendente + eventuale loop correzioni (Fase 2–3)
+3. Template Word + inserimento testo (Fase 4) — **solo dopo OK del reviewer**
+4. Consegna (Fase 5)
+
+Non leggere le impostazioni plugin come primo passo. Non pianificare il recupero del template prima della redazione.
 
 ---
 
