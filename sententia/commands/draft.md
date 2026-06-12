@@ -88,7 +88,11 @@ Solo quando il reviewer ha approvato il testo, gestisci il template in questo or
 
 Una volta determinato il template (o la sua assenza):
 - Apri con `mcp__Word__By_Anthropic___open_document` (se template esistente)
-- Inserisci data, titolo, corpo e note a piè di pagina con `mcp__Word__By_Anthropic___insert_text` / `mcp__Word__By_Anthropic___replace_text`
+- Leggi il contenuto del documento con `mcp__Word__By_Anthropic___get_document_text` per capire la struttura
+- **Inserimento nel posto corretto:**
+  - Se il template contiene il segnaposto `[TESTO_DOCUMENTO]`: sostituiscilo con `mcp__Word__By_Anthropic___replace_text`
+  - Se il template non ha segnaposto: inserisci il testo all'inizio del corpo (dopo l'intestazione), **non in fondo al documento**. Usa `mcp__Word__By_Anthropic___insert_text` con posizione appropriata.
+  - Se nessun template (documento nuovo): inserisci normalmente con `mcp__Word__By_Anthropic___insert_text`
 - Leggi `output_folder` dalle impostazioni. Se non impostato, salva in `~/Desktop/`
 - Salva con `mcp__Word__By_Anthropic___save_document` come: `[TipoDocumento]-[NomeDestinatario]-[YYYY-MM-DD].docx`
 
